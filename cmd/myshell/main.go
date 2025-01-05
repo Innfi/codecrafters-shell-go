@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -15,5 +16,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("%s: command not found\n", command[0:len(command)-2])
+	command = strings.Replace(command, "\r", "", -1)
+	command = strings.Replace(command, "\n", "", -1)
+
+	fmt.Printf("%s: command not found", command)
 }
