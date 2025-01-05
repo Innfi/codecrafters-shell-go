@@ -16,7 +16,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	if command == "invalid_command" {
-		fmt.Fprint(os.Stdout, "invalid_command: command not found")
+	if command[0:7] == "invalid" {
+		// fmt.Fprint(os.Stdout, "invalid_command: command not found")
+		fmt.Printf("%s: command not found\n", command)
 	}
 }
