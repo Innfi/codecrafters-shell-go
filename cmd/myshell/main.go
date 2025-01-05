@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-	// Uncomment this block to pass the first stage
 	fmt.Fprint(os.Stdout, "$ ")
 
 	// Wait for user input
@@ -16,5 +15,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("%s: command not found\n", command)
+	fmt.Printf("%s: command not found\n", command[0:len(command)-2])
 }
