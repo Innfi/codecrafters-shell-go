@@ -20,6 +20,10 @@ func main() {
 		command = strings.Replace(command, "\r", "", -1)
 		command = strings.Replace(command, "\n", "", -1)
 
+		if command[0:4] == "exit" {
+			os.Exit(0)
+		}
+
 		fmt.Printf("%s: command not found\n", command)
 	}
 }
