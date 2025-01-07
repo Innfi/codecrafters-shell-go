@@ -61,7 +61,7 @@ func handleCommand(argument *Argument) {
 }
 
 func handleCommandType(argument *Argument) {
-	builtIns := []string{"echo", "exit"}
+	builtIns := []string{"echo", "exit", "type"}
 
 	for idx := range builtIns {
 		if builtIns[idx] == argument.params {
