@@ -7,26 +7,68 @@ import (
 	"strings"
 )
 
+type Argument struct {
+	command string
+	params  string
+}
+
 func main() {
+	reader := bufio.NewReader(os.Stdin)
+
 	for {
 		// Wait for user input
 		fmt.Fprint(os.Stdout, "$ ")
 
-		arguments, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		arguments, err := readArguments(reader)
 		if err != nil {
-			os.Exit(1)
-		}
-		arguments = strings.Replace(arguments, "\r", "", -1)
-		arguments = strings.Replace(arguments, "\n", "", -1)
-
-		command, params, _ := strings.Cut(arguments, " ")
-		if command == "echo" {
-			fmt.Println(params)
+			fmt.Printf("read error\n")
 			continue
-		} else if arguments[0:4] == "exit" {
-			os.Exit(0)
 		}
 
-		fmt.Printf("%s: command not found\n", arguments)
+		handleCommand(arguments)
 	}
+}
+
+// func
+func readArguments(reader *bufio.Reader) (*Argument, error) {
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		return nil, err
+	}
+
+	input = strings.Replace(input, "\r", "", -1)
+	input = strings.Replace(input, "\n", "", -1)
+
+	command, params, _ := strings.Cut(input, " ")
+
+	return &Argument{
+		command,
+		params,
+	}, nil
+}
+
+func handleCommand(argument *Argument) {
+	switch argument.command {
+	case "exit":
+		os.Exit(0)
+	case "echo":
+		fmt.Println(argument.params)
+	case "type":
+		handleCommandType(argument)
+	default:
+		fmt.Printf("%s: command not found\n", argument.command)
+	}
+}
+
+func handleCommandType(argument *Argument) {
+	builtIns := []string{"echo", "exit"}
+
+	for idx := range builtIns {
+		if builtIns[idx] == argument.params {
+			fmt.Printf("%s is a shell builtin\n", argument.params)
+			return
+		}
+	}
+
+	fmt.Printf("%s: not found\n", argument.params)
 }
