@@ -83,8 +83,6 @@ func handleCommandType(argument *Argument) {
 		if _, err := os.Stat(effectivePath); !os.IsNotExist(err) {
 			fmt.Printf("%s is %s\n", argument.params, effectivePath)
 			return
-		} else {
-			fmt.Printf("%s\n", err)
 		}
 	}
 
