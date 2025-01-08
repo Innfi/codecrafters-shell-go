@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"runtime"
 	"strings"
 )
 
@@ -62,7 +63,6 @@ func handleCommand(argument *Argument) {
 
 func handleCommandType(argument *Argument) {
 	builtIns := []string{"echo", "exit", "type"}
-
 	for idx := range builtIns {
 		if builtIns[idx] == argument.params {
 			fmt.Printf("%s is a shell builtin\n", argument.params)
@@ -70,5 +70,33 @@ func handleCommandType(argument *Argument) {
 		}
 	}
 
+	delimiter, divider := getPathTokens()
+	envPath := os.Getenv("PATH")
+	pathArray := strings.Split(envPath, delimiter)
+
+	for _, pathElem := range pathArray {
+		effectivePath := fmt.Sprintf("%s%s%s", pathElem, divider, argument.params)
+		// effectivePath = strings.Replace(effectivePath, "\\", "\\\\", -1)
+		// effectivePath = strings.Replace(effectivePath, " ", "\\ ", -1)
+		// fmt.Printf("effectivePath: %s\n", effectivePath)
+
+		if _, err := os.Stat(effectivePath); !os.IsNotExist(err) {
+			fmt.Printf("%s is %s\n", argument.params, effectivePath)
+			return
+		} else {
+			fmt.Printf("%s\n", err)
+		}
+	}
+
 	fmt.Printf("%s: not found\n", argument.params)
+}
+
+func getPathTokens() (string, string) {
+	os := runtime.GOOS
+
+	if os == "windows" {
+		return ";", "\\"
+	}
+
+	return ":", "/"
 }
