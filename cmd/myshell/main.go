@@ -106,7 +106,6 @@ func handleCommandDefault(argument *Argument) {
 		effectivePath := fmt.Sprintf("%s%s%s", pathElem, divider, argument.command)
 
 		if _, err := os.Stat(effectivePath); !os.IsNotExist(err) {
-			fmt.Printf("%s is %s\n", argument.params, effectivePath)
 			exec.Command(effectivePath, argument.params)
 			return
 		}
