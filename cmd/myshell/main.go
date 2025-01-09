@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"runtime"
 	"strings"
 )
@@ -57,7 +58,7 @@ func handleCommand(argument *Argument) {
 	case "type":
 		handleCommandType(argument)
 	default:
-		fmt.Printf("%s: command not found\n", argument.command)
+		handleCommandDefault(argument)
 	}
 }
 
@@ -76,9 +77,6 @@ func handleCommandType(argument *Argument) {
 
 	for _, pathElem := range pathArray {
 		effectivePath := fmt.Sprintf("%s%s%s", pathElem, divider, argument.params)
-		// effectivePath = strings.Replace(effectivePath, "\\", "\\\\", -1)
-		// effectivePath = strings.Replace(effectivePath, " ", "\\ ", -1)
-		// fmt.Printf("effectivePath: %s\n", effectivePath)
 
 		if _, err := os.Stat(effectivePath); !os.IsNotExist(err) {
 			fmt.Printf("%s is %s\n", argument.params, effectivePath)
@@ -97,4 +95,22 @@ func getPathTokens() (string, string) {
 	}
 
 	return ":", "/"
+}
+
+func handleCommandDefault(argument *Argument) {
+	delimiter, divider := getPathTokens()
+	envPath := os.Getenv("PATH")
+	pathArray := strings.Split(envPath, delimiter)
+
+	for _, pathElem := range pathArray {
+		effectivePath := fmt.Sprintf("%s%s%s", pathElem, divider, argument.command)
+
+		if _, err := os.Stat(effectivePath); !os.IsNotExist(err) {
+			fmt.Printf("%s is %s\n", argument.params, effectivePath)
+			exec.Command(effectivePath, argument.params)
+			return
+		}
+	}
+
+	fmt.Printf("%s: command not found\n", argument.command)
 }
