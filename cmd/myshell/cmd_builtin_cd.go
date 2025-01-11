@@ -6,8 +6,8 @@ import (
 )
 
 func HandleCommandCd(argument *Argument) {
-	err := os.Chdir(argument.params)
-	if err != nil {
-		fmt.Println(err)
+	if err := os.Chdir(argument.params); err != nil {
+		// fmt.Println(err)
+		fmt.Printf("cd %s: no such file or directory\n", argument.params)
 	}
 }
