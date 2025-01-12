@@ -7,7 +7,7 @@ import (
 
 func HandleCommandCd(argument *Argument) {
 	effectivePath := toEffectivePath(argument)
-	fmt.Printf("effectivePath: %s\n", effectivePath)
+	// fmt.Printf("effectivePath: %s\n", effectivePath)
 	if err := os.Chdir(effectivePath); err != nil {
 		fmt.Printf("cd: %s: No such file or directory\n", effectivePath)
 	}
