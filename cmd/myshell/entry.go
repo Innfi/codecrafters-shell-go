@@ -12,6 +12,8 @@ func HandleCommand(argument *Argument) {
 		HandleCommandPwd()
 	case "cd":
 		HandleCommandCd(argument)
+	case "cat":
+		HandleCommandCat(argument)
 	default:
 		HandleCommandDefault(argument)
 	}
