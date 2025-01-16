@@ -37,7 +37,7 @@ func ToTokenArray(input string) []string {
 
 		if effectiveInput[0] == ' ' {
 			tokenArray = append(tokenArray, " ")
-			effectiveInput = effectiveInput[1:]
+			effectiveInput = strings.TrimLeft(effectiveInput, " ")
 			continue
 		}
 
