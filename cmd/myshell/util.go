@@ -28,20 +28,33 @@ func ToTokenArray(input string) []string {
 	tokenArray := []string{}
 
 	effectiveInput := strings.Trim(input, "\r\n")
+	effectiveInput = strings.TrimLeft(effectiveInput, " ")
 
 	for {
-		start := strings.Index(effectiveInput, "'")
-		if start == -1 {
-			tokenArray = append(tokenArray, strings.Fields(effectiveInput)...)
+		if len(effectiveInput) <= 0 {
 			break
 		}
 
-		tokenArray = append(tokenArray, strings.Fields(effectiveInput[:start])...)
+		if effectiveInput[0] == ' ' {
+			tokenArray = append(tokenArray, " ")
+			effectiveInput = effectiveInput[1:]
+			continue
+		}
+
+		start := strings.Index(effectiveInput, "'")
+		if start == -1 {
+			tokenArray = append(tokenArray, effectiveInput)
+			break
+		}
+
+		if start > 0 {
+			tokenArray = append(tokenArray, effectiveInput[:start])
+		}
+
 		effectiveInput = effectiveInput[start+1:]
 
 		end := strings.Index(effectiveInput, "'")
 		if end < 0 {
-			// tokenArray = append(tokenArray, strings.Fields(effectiveInput)...)
 			break
 		}
 
