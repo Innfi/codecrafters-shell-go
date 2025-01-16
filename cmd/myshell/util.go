@@ -43,7 +43,7 @@ func ToTokenArray(input string) []string {
 
 		start := strings.Index(effectiveInput, "'")
 		if start == -1 {
-			tokenArray = append(tokenArray, effectiveInput)
+			tokenArray = append(tokenArray, strings.Join(strings.Fields(effectiveInput), " "))
 			break
 		}
 
