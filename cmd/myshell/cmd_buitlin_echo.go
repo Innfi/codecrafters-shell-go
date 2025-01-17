@@ -9,6 +9,4 @@ func HandleCommandEcho(argument *Argument) {
 	tokenArray := ToTokenArray(argument.params)
 
 	fmt.Println(strings.Join(tokenArray, ""))
-
-	// fmt.Println(argument.params)
 }
