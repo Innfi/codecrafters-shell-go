@@ -6,7 +6,7 @@ import (
 )
 
 func HandleCommandType(argument *Argument) {
-	builtIns := []string{"echo", "exit", "type", "pwd", "cd", "cat"}
+	builtIns := []string{"echo", "exit", "type", "pwd", "cd"}
 	for idx := range builtIns {
 		if builtIns[idx] == argument.params {
 			fmt.Printf("%s is a shell builtin\n", argument.params)
