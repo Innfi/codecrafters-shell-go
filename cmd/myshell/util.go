@@ -4,6 +4,7 @@ import (
 	"os"
 	"runtime"
 	"strings"
+	"unicode"
 )
 
 func GetPathAndDivider() ([]string, string) {
@@ -61,6 +62,32 @@ func ToTokenArray(input string) []string {
 		tokenArray = append(tokenArray, effectiveInput[:end])
 
 		effectiveInput = effectiveInput[end+1:]
+	}
+
+	return tokenArray
+}
+
+func ToTokenArrayRevised(origin string) []string {
+	tokenArray := []string{}
+
+	input := strings.Trim(origin, "\r\n")
+	input = strings.TrimLeft(input, " ")
+
+	for {
+		first := rune(input[0])
+
+		// double quote
+		if first == '"' {
+			// push the mark into the stack
+		}
+
+		// single quote
+
+		if unicode.IsSpace(first) {
+			tokenArray = append(tokenArray, " ")
+			input = strings.TrimLeft(input, " ")
+			continue
+		}
 	}
 
 	return tokenArray
