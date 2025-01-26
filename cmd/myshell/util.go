@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"runtime"
 	"strings"
@@ -73,21 +74,66 @@ func ToTokenArrayRevised(origin string) []string {
 	input := strings.Trim(origin, "\r\n")
 	input = strings.TrimLeft(input, " ")
 
-	for {
-		first := rune(input[0])
+	var quote rune
+	runeArray := []rune{}
 
-		// double quote
-		if first == '"' {
-			// push the mark into the stack
+	for {
+		if len(input) <= 0 {
+			break
 		}
 
-		// single quote
+		elem := rune(input[0])
 
-		if unicode.IsSpace(first) {
-			tokenArray = append(tokenArray, " ")
-			input = strings.TrimLeft(input, " ")
+		if unicode.IsSpace(elem) {
+			if quote == 0 {
+				if len(runeArray) > 0 {
+					tokenArray = append(tokenArray, string(runeArray))
+					runeArray = []rune{}
+				}
+
+				tokenArray = append(tokenArray, " ")
+				input = strings.TrimLeft(input, " ")
+
+				continue
+			} else {
+				runeArray = append(runeArray, elem)
+				fmt.Println("space, quote!=0] runeArray: ", runeArray)
+
+				input = input[1:]
+				continue
+			}
+		}
+
+		if unicode.IsDigit(elem) || unicode.IsLetter(elem) {
+			runeArray = append(runeArray, elem)
+
+			input = input[1:]
 			continue
 		}
+
+		if elem == '"' || elem == '\'' {
+			if quote == 0 {
+				quote = elem
+
+				input = input[1:]
+				continue
+			}
+
+			if quote == elem {
+				tokenArray = append(tokenArray, string(runeArray))
+				runeArray = []rune{}
+				quote = 0
+			} else {
+				runeArray = append(runeArray, elem)
+			}
+
+			input = input[1:]
+			continue
+		}
+	}
+
+	if len(runeArray) > 0 {
+		tokenArray = append(tokenArray, string(runeArray))
 	}
 
 	return tokenArray
