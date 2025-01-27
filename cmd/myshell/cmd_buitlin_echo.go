@@ -6,7 +6,7 @@ import (
 )
 
 func HandleCommandEcho(argument *Argument) {
-	tokenArray := ToTokenArray(argument.params)
+	tokenArray := ToTokenArrayRevised(argument.params)
 
 	fmt.Println(strings.Join(tokenArray, ""))
 }

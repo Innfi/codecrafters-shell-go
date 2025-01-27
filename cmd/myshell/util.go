@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"runtime"
 	"strings"
@@ -97,7 +96,6 @@ func ToTokenArrayRevised(origin string) []string {
 				continue
 			} else {
 				runeArray = append(runeArray, elem)
-				fmt.Println("space, quote!=0] runeArray: ", runeArray)
 
 				input = input[1:]
 				continue

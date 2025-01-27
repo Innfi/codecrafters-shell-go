@@ -6,7 +6,7 @@ import (
 )
 
 func HandleCommandCat(argument *Argument) {
-	tokenArray := ToTokenArray(argument.params)
+	tokenArray := ToTokenArrayRevised(argument.params)
 
 	for _, token := range tokenArray {
 		printFile(token)
