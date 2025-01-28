@@ -102,13 +102,6 @@ func ToTokenArrayRevised(origin string) []string {
 			}
 		}
 
-		if unicode.IsDigit(elem) || unicode.IsLetter(elem) {
-			runeArray = append(runeArray, elem)
-
-			input = input[1:]
-			continue
-		}
-
 		if elem == '"' || elem == '\'' {
 			if quote == 0 {
 				quote = elem
@@ -128,6 +121,11 @@ func ToTokenArrayRevised(origin string) []string {
 			input = input[1:]
 			continue
 		}
+
+		runeArray = append(runeArray, elem)
+
+		input = input[1:]
+		continue
 	}
 
 	if len(runeArray) > 0 {
