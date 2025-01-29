@@ -59,18 +59,22 @@ func ToTokenArrayRevised(origin string) []string {
 		}
 
 		if elem == '\\' {
+			next := rune(input[1])
+
 			if quote == 0 {
+				if next == '\\' || next == '$' || next == 'n' || next == '"' {
+					runeArray = append(runeArray, rune(input[1]))
+					input = input[2:]
+					continue
+				}
+
+				input = input[1:]
+				continue
+			} else {
 				runeArray = append(runeArray, rune(input[1]))
 
 				input = input[2:]
 				continue
-			} else {
-				runeArray = append(runeArray, elem)
-
-				input = input[1:]
-				continue
-				// runeArray = append(runeArray, rune(input[1]))
-				// input = input[2:]
 			}
 		}
 
@@ -171,12 +175,16 @@ func TestToTokenArrayRevicedDoubleQuotationWithSingleQuoteNoSpaced(t *testing.T)
 
 func TestToTokenArrayRevicedBackSlash(t *testing.T) {
 	result := ToTokenArrayRevised("world\\ \\ \\ script")
-	assert.Equal(t, len(result), 1)
-	assert.Equal(t, result[0], "world   script")
+	assert.Equal(t, len(result), 5)
+	assert.Equal(t, result[0], "world")
+	assert.Equal(t, result[1], " ")
+	assert.Equal(t, result[2], " ")
+	assert.Equal(t, result[3], " ")
+	assert.Equal(t, result[4], "script")
 }
 
 func TestToTokenArrayRevicedBackSlashWithinQuote(t *testing.T) {
-	result := ToTokenArrayRevised("\"hello\\ world\"")
+	result := ToTokenArrayRevised("\"hello\\\\ world\"")
 	assert.Equal(t, len(result), 1)
 	assert.Equal(t, result[0], "hello\\ world")
 }
