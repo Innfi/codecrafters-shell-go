@@ -102,6 +102,20 @@ func ToTokenArrayRevised(origin string) []string {
 			}
 		}
 
+		if elem == '\\' {
+			if quote == 0 {
+				runeArray = append(runeArray, rune(input[1]))
+
+				input = input[2:]
+				continue
+			} else {
+				runeArray = append(runeArray, elem)
+
+				input = input[1:]
+				continue
+			}
+		}
+
 		if elem == '"' || elem == '\'' {
 			if quote == 0 {
 				quote = elem
