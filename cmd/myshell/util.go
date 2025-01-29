@@ -109,13 +109,9 @@ func ToTokenArrayRevised(origin string) []string {
 				input = input[2:]
 				continue
 			} else {
-				runeArray = append(runeArray, elem)
+				runeArray = append(runeArray, rune(input[1]))
 
-				if input[1] == '\\' {
-					input = input[2:]
-				} else {
-					input = input[1:]
-				}
+				input = input[2:]
 				continue
 			}
 		}

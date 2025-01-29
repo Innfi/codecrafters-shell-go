@@ -69,6 +69,8 @@ func ToTokenArrayRevised(origin string) []string {
 
 				input = input[1:]
 				continue
+				// runeArray = append(runeArray, rune(input[1]))
+				// input = input[2:]
 			}
 		}
 
