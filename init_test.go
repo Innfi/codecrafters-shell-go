@@ -61,21 +61,18 @@ func ToTokenArrayRevised(origin string) []string {
 		if elem == '\\' {
 			next := rune(input[1])
 
-			if quote == 0 {
-				if next == '\\' || next == '$' || next == 'n' || next == '"' {
-					runeArray = append(runeArray, rune(input[1]))
-					input = input[2:]
-					continue
-				}
-
-				input = input[1:]
-				continue
-			} else {
-				runeArray = append(runeArray, rune(input[1]))
-
+			if next == '\\' || next == '$' || next == 'n' || next == '"' {
+				runeArray = append(runeArray, rune(next))
 				input = input[2:]
 				continue
 			}
+
+			if quote != 0 {
+				runeArray = append(runeArray, rune(elem))
+			}
+
+			input = input[1:]
+			continue
 		}
 
 		if elem == '"' || elem == '\'' {
@@ -187,4 +184,10 @@ func TestToTokenArrayRevicedBackSlashWithinQuote(t *testing.T) {
 	result := ToTokenArrayRevised("\"hello\\\\ world\"")
 	assert.Equal(t, len(result), 1)
 	assert.Equal(t, result[0], "hello\\ world")
+}
+
+func TestComplexCases1(t *testing.T) {
+	result := ToTokenArrayRevised("\"hello'script'\\\\n'world\"")
+	assert.Equal(t, len(result), 1)
+	assert.Equal(t, result[0], "hello'script'\\n'world")
 }
