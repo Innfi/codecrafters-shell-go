@@ -103,6 +103,12 @@ func ToTokenArrayRevised(origin string) []string {
 		}
 
 		if elem == '\\' {
+			if quote == '\'' {
+				runeArray = append(runeArray, rune(elem))
+				input = input[1:]
+				continue
+			}
+
 			next := rune(input[1])
 
 			if next == '\\' || next == '$' || next == 'n' || next == '"' {
