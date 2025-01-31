@@ -110,6 +110,11 @@ func ToTokenArrayRevised(origin string) []string {
 			}
 
 			next := rune(input[1])
+			if quote == 0 && next == '\'' {
+				runeArray = append(runeArray, rune(next))
+				input = input[2:]
+				continue
+			}
 
 			if next == '\\' || next == '$' || next == 'n' || next == '"' {
 				runeArray = append(runeArray, rune(next))
@@ -124,31 +129,6 @@ func ToTokenArrayRevised(origin string) []string {
 			input = input[1:]
 			continue
 		}
-		// if elem == '\\' {
-		// 	next := rune(input[1])
-
-		// 	if quote == 0 {
-		// 		if next == '\\' || next == '$' || next == 'n' || next == '"' {
-		// 			runeArray = append(runeArray, rune(input[1]))
-		// 			input = input[2:]
-		// 			continue
-		// 		}
-
-		// 		input = input[1:]
-		// 		continue
-		// 	} else {
-		// 		if next == '\\' || next == '$' || next == 'n' || next == '"' {
-		// 			runeArray = append(runeArray, rune(next))
-
-		// 			input = input[2:]
-		// 			continue
-		// 		}
-
-		// 		runeArray = append(runeArray, rune(elem))
-		// 		input = input[1:]
-		// 		continue
-		// 	}
-		// }
 
 		if elem == '"' || elem == '\'' {
 			if quote == 0 {
